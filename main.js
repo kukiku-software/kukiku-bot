@@ -3,11 +3,9 @@ const client = new Client({ intents: ['GUILDS', 'GUILD_MESSAGES'] });
 
 // Load all of the commands
 const commands = new Collection();
-const commandFiles = require.context('./commands', false, /\.js$/);
-for (const file of commandFiles.keys()) {
-  const command = require(`./commands${file}`);
-  commands.set(command.name, command);
-}
+commands.set('ping', async interaction => {
+  await interaction.reply('Pong!');
+});
 
 // Handle interaction events
 client.on('interactionCreate', async interaction => {
