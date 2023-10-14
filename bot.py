@@ -136,9 +136,6 @@ async def help_command(interaction: discord.interactions):
         "userinfo <user>": "Get user information",
         "serverinfo": "Get the servers information",
         "clear <number>": "Clear a specified number of messages",
-        "countdown <number>": "Start a countdown timer",
-        "roll <number>": "Roll a random number",
-        "weather <bool>": "start or stop the weather updates."
         # Add more commands and descriptions here
     }
 
