@@ -35,9 +35,7 @@ async def on_ready():
     except Exception as e:
         print(e)
 
-@bot.tree.command(name="test", description="command for testing the bot.")
-async def test(interaction: discord.integrations):
-    await interaction.response.send_message('Hello world.')
+bot.load_extension('commands.test')
 
 @bot.tree.command(name="ping", description="Check the bot's latency")
 async def ping(interaction: discord.integrations):
