@@ -1,1 +1,1 @@
-worker: python kukiku.py
+worker: node main.js
