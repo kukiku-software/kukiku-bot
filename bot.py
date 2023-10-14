@@ -26,7 +26,6 @@ def retrieve_and_update_config():
     if not prefix or not api_key or not token or not currency_key:
         raise Exception('Missing configuration values')
 
-
 @bot.event
 async def on_ready():
     print("Bot is up and ready!")
@@ -103,7 +102,7 @@ async def serverinfo(interaction: discord.interactions):
     retrieve_and_update_config()
 
 @bot.tree.command(name="userinfo", description="Get user information")
-async def userinfo(interaction: discord.interactions, member: discord.Member = None):
+async def userinfo(interaction: discord.interactions, member: discord.Member):
     if member is None:
         member = interaction.author
 
