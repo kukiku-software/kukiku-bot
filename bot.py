@@ -1,5 +1,4 @@
 import discord
-from dopplersdk import DopplerSDK
 from discord import app_commands
 from discord.ext import commands, tasks
 from datetime import datetime, timedelta
@@ -8,44 +7,25 @@ import asyncio
 import requests
 import random
 import time
+import os
 
 bot = commands.Bot(command_prefix='!', intents = discord.Intents.all())
 update_task = None  # Declare update_task variable
 weather_updates_enabled = False  # Control variable for weather updates
 
-DOPPLERSDK_BEARER_TOKEN = 'dp.sa.cqkzvKdXhMyvFjz4rYWFLOeEvSH7qUeKNlXyZs2zlDi'
-
-# Initialize Doppler
-sdk = DopplerSDK()
-sdk.set_access_token(DOPPLERSDK_BEARER_TOKEN)
-
-# Define the project and config
-project_name = 'bolig-bot'
-config_name = 'dev'
-
-# Global variables for configuration
-prefix = ''
-api_key = ''
-city_location = ''
-token = ''
-currency_key = ''
-
 def retrieve_and_update_config():
-    global prefix, api_key, channel_id, city_location, token, currency_key
+    global prefix, api_key, token, currency_key
 
-    # Retrieve the secrets
-    prefix_secret = sdk.secrets.get(project=project_name, config=config_name, name='PREFIX')
-    api_key_secret = sdk.secrets.get(project=project_name, config=config_name, name='API_KEY')
-    city_location_secret = sdk.secrets.get(project=project_name, config=config_name, name='LOCATION')
-    token_secret = sdk.secrets.get(project=project_name, config=config_name, name='BOT_TOKEN')
-    currency_key_secret = sdk.secrets.get(project=project_name, config=config_name, name='CURRENCY_KEY')
+    # Retrieve the configuration values from Heroku
+    prefix = os.getenv('PREFIX')
+    api_key = os.getenv('API_KEY')
+    token = os.getenv('BOT_TOKEN')
+    currency_key = os.getenv('CURRENCY_KEY')
 
-    # Extract the computed values
-    prefix = prefix_secret.value.get('computed')
-    api_key = api_key_secret.value.get('computed')
-    city_location = city_location_secret.value.get('computed')
-    token = token_secret.value.get('computed')
-    currency_key = currency_key_secret.value.get('computed')
+    # Check if all configuration values are set
+    if not prefix or not api_key or not token or not currency_key:
+        raise Exception('Missing configuration values')
+
 
 @bot.event
 async def on_ready():
